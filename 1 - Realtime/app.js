@@ -144,9 +144,15 @@ document.addEventListener("DOMContentLoaded", function () {
      * FILTRO
      * .startAt(): Traz valores cujo valor passado na query comece no valor da propriedade selecionada.
      * .endAt(): Traz valores cujo valor passado na query termine no valor da propriedade selecionada.
-     * equalTo(): Traz valores cujo valor passado na query bata exatamente com o valor da propriedade selecionada.
+     * .equalTo(): Traz valores cujo valor passado na query bata exatamente com o valor da propriedade selecionada.
      */
-    ref.orderByChild('idade').on('child_added', snapshot => {
+
+    /**
+     * LIMITES
+     * .limitToFirst(number): retorna apenas o número de valores informado por parametro
+     * .limitToLast(number): retorna apenas os últimos valores de acordo com o valor informado por parametro
+     */
+    ref.limitToLast(5).on('child_added', snapshot => {
         adicionaCardATela(snapshot.val(), snapshot.key);
     })
 
