@@ -61,6 +61,8 @@ function curtir(id) {
     // ou pode-se passar o objeto completo e atualiza-lo com os novos valores nos campos correspondentes;
     ref.child(id + '/curtidas').set(countNumber).then(() => {
         count.innerText = countNumber;
+    }, erro => {
+        console.log('Erro ao curtir: ', erro);
     });
 };
 
@@ -78,6 +80,8 @@ function descurtir(id) {
         // update(): Recebe um objeto (e apenas um objeto) e atualiza apenas as propriedades desse objeto
         ref.child(id).update({curtidas: countNumber}).then(() => {
             count.innerText = countNumber;
+        }).caych(erro => {
+            console.log('Erro ao descurtir: ', erro);
         });
     };
 };
@@ -86,6 +90,10 @@ function descurtir(id) {
  * Espera o evento de que a DOM está pronta para executar algo
  */
 document.addEventListener("DOMContentLoaded", function () {
+    //LOGGING DOS STATUS DE CHAMADA DO FIREBASE
+    // firebase.database.enableLogging(message => {
+    //     console.log('[Firebase] ', message); 
+    // })
 
     // once(): retorna os dados lidos de uma URL
     // snapshot: objeto retornado pela leitura
@@ -137,7 +145,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // orderbyChild(): ordena pelo parametro passado na função
     ref.orderByChild('idade').on('child_added', snapshot => {
         adicionaCardATela(snapshot.val(), snapshot.key);
+    }, erro => {
+        console.log('Erro no on(): ', erro);
     })
+
+    /**
+     * USANDO FETCH NO LUGAR DA BIBLIOTECA DO FIREBASE
+     */
+    // fetch('https://curso-firebase-web-667e0.firebaseio.com/card')
+    //     .then(res => res.json())
+    //     .then(res => {
+    //         console.log('resposta', res);
+    //         for(var key in red){
+    //             adicionaCardATela(res[key], key);
+    //         };
+    //     })
 });
 
 /**

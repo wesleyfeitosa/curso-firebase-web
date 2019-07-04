@@ -8,7 +8,29 @@ var NOMES = ["Anderson", "Beatriz", "Caio", "Daniela", "Everton", "Fabiana", "Ga
  * Botão para cria um card no card-contaier
  */
 function criarCard() {
-    
+    var card = {
+        nome: NOMES[Math.floor(Math.random() * NOMES.length - 1)],
+        idade: Math.floor(Math.random() * 22 + 18),
+        curtidas: 0
+    };
+
+    /**
+     * .collection('coleção'): Referenciar a coleção
+     * .doc('documento'): referencia o documento
+     * .set({dados}): insere o objeto passado por parametro na referencia
+     */
+    // firebase.firestore().collection('cards').doc('1').set(card).then(() => {
+    //     console.log('dados salvos');
+    //     adicionaCardATela(card, 1);
+    // });
+
+    /**
+     * .add(): Adiciona os dados dentro de um UID gerado automaticamente.
+     */
+    firebase.firestore().collection('cards').add(card).then(() => {
+        console.log('dados salvos');
+        adicionaCardATela(card, 1);
+    })
 };
 
 /**
@@ -39,7 +61,61 @@ function descurtir(id) {
  * Espera o evento de que a DOM está pronta para executar algo
  */
 document.addEventListener("DOMContentLoaded", function () {
-    
+    firebase.firestore().collection('cards').get().then(snapshot => {
+        
+        // Os documentos dentro da minha coleção, retorna um objeto e deve-se utilizar um forEach
+        // snapshot.docs()
+
+        // Uma propriedade que retorna um booleano se o snapshot estiver vazio 
+        // snapshot.empty
+
+        // são os metadados da coleção
+        // snapshot.metadado
+
+        // retorna a query utilizada no flltro por esse get
+        // snapshot.query
+
+        // retorna o número de documentos dentro dessa coleção
+        // snapashot.size
+
+        // retorna um array com as mudanças que essa coleção sofreu desde a última leitura
+        // snapshot.docChanges 
+
+        snapshot.docs.forEach(card => {
+            // retorna os dados do meu documento
+            // card.data()
+
+            // retorna o UID do meu documento 
+            // card.id
+
+            // retorna um booleano caso o documento passado seja igual ao documento utilizado (serve para docs e collections) 
+            // card.isEqual(doc)
+            // adicionaCardATela(card.data(), card.id);
+        })
+    })
+
+    /**
+     * .onSnapshot(): observando em tempo real
+     */
+    firebase.firestore().collection('cards').onSnapshot(snapshot => {
+
+        // Usar dessa forma é equivalente ao .on('value') do RealTime Database
+        // snapshot.docs.forEach();
+
+        // Traz todos os dados com o evento de 'added' na primeira chamada e depois 
+        // traz apenas os novos documentos ou documentos que sofreram alterações 
+        snapshot.docChanges().forEach(card => {
+            if(card.type == 'added'){
+                adicionaCardATela(card.doc.data(), card.doc.id);
+            };
+            if(card.type == 'modified'){
+                console.log('modified');
+            };
+            if(card.type == 'removed'){
+                console.log('removed');
+            };
+        })
+    });   
 });
 
 /**
