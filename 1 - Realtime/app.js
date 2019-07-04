@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('Erro no on(): ', erro);
     })
 
-<<<<<<< HEAD
     /**
      * USANDO FETCH NO LUGAR DA BIBLIOTECA DO FIREBASE
      */
@@ -178,8 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
     //             adicionaCardATela(res[key], key);
     //         };
     //     })
-=======
->>>>>>> 5c26c5bedf658f9949415ab92e39561d5ca83faa
 });
 
 /**
