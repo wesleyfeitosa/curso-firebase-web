@@ -143,12 +143,30 @@ document.addEventListener("DOMContentLoaded", function () {
      * ORDENAÇÃO
      */
     // orderbyChild(): ordena pelo parametro passado na função
-    ref.orderByChild('idade').on('child_added', snapshot => {
+    // orderbyey(): ordena pela chave dos nós
+    // ref.orderByChild('idade').on('child_added', snapshot => {
+    //     adicionaCardATela(snapshot.val(), snapshot.key);
+    // })
+    
+    /**
+     * FILTRO
+     * .startAt(): Traz valores cujo valor passado na query comece no valor da propriedade selecionada.
+     * .endAt(): Traz valores cujo valor passado na query termine no valor da propriedade selecionada.
+     * .equalTo(): Traz valores cujo valor passado na query bata exatamente com o valor da propriedade selecionada.
+     */
+
+    /**
+     * LIMITES
+     * .limitToFirst(number): retorna apenas o número de valores informado por parametro
+     * .limitToLast(number): retorna apenas os últimos valores de acordo com o valor informado por parametro
+     */
+    ref.limitToLast(5).on('child_added', snapshot => {
         adicionaCardATela(snapshot.val(), snapshot.key);
     }, erro => {
         console.log('Erro no on(): ', erro);
     })
 
+<<<<<<< HEAD
     /**
      * USANDO FETCH NO LUGAR DA BIBLIOTECA DO FIREBASE
      */
@@ -160,6 +178,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //             adicionaCardATela(res[key], key);
     //         };
     //     })
+=======
+>>>>>>> 5c26c5bedf658f9949415ab92e39561d5ca83faa
 });
 
 /**
