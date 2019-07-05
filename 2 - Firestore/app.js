@@ -38,7 +38,24 @@ function criarCard() {
  * @param {String} id Id do card
  */
 function deletar(id) {
-    
+    var card = document.getElementById(id);
+
+    /**
+     * .delete(): Deleta o documento da coleção. OBS: pode ser usado apenas em documentos.
+     */
+    firebase.firestore().collection('cards').doc(id).delete().then(() => {
+        card.remove();
+    });
+
+    /**
+     * EXCLUIR UM CAMPO DO FIREBASE (ATRIBUTO)
+     * Para remover uma propriedade do document, podemos dar um update() passando no objeto a propriedade 
+     * que será excluída.
+     */
+    // firebase.firestore().collection('cards').doc(id).update({curtidas: firebase.firestore.FieldValue.delete()})
+    //     .then(() => {
+    //         console.log('removido curtidas');
+    //     })
 };
 
 /**
@@ -46,7 +63,17 @@ function deletar(id) {
  * @param {String} id Id do card
  */
 function curtir(id) {
-    
+    var card = document.getElementById(id);
+    var count = card.getElementsByClassName('count-number')[0];
+    var countNumber = +count.innerText;
+    countNumber = countNumber + 1;
+
+    /**
+     * .update({dados}): atualiza todos os dados passado por parâmetro. OBS. pode ser usado apenas em docs.
+     */
+    firebase.firestore().collection('cards').doc(id).update({ curtidas: countNumber }).then(() => {
+        count.innerText = countNumber;
+    })
 };
 
 /**
@@ -54,15 +81,28 @@ function curtir(id) {
  * @param {String} id Id do card
  */
 function descurtir(id) {
-    
+    var card = document.getElementById(id);
+    var count = card.getElementsByClassName('count-number')[0];
+    var countNumber = +count.innerText;
+    if (countNumber > 0) {
+        countNumber = countNumber - 1;
+
+        /**
+         * .update({dados}): atualiza todos os dados passado por parâmetro. OBS. pode ser usado apenas em docs.
+         */
+        firebase.firestore().collection('cards').doc(id).update({ curtidas: countNumber }).then(() => {
+            count.innerText = countNumber;
+        })
+    }
 };
 
 /**
  * Espera o evento de que a DOM está pronta para executar algo
  */
 document.addEventListener("DOMContentLoaded", function () {
-    firebase.firestore().collection('cards').get().then(snapshot => {
-        
+    
+    // firebase.firestore().collection('cards').get().then(snapshot => {
+
         // Os documentos dentro da minha coleção, retorna um objeto e deve-se utilizar um forEach
         // snapshot.docs()
 
@@ -81,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // retorna um array com as mudanças que essa coleção sofreu desde a última leitura
         // snapshot.docChanges 
 
-        snapshot.docs.forEach(card => {
+        // snapshot.docs.forEach(card => {
             // retorna os dados do meu documento
             // card.data()
 
@@ -91,31 +131,44 @@ document.addEventListener("DOMContentLoaded", function () {
             // retorna um booleano caso o documento passado seja igual ao documento utilizado (serve para docs e collections) 
             // card.isEqual(doc)
             // adicionaCardATela(card.data(), card.id);
-        })
-    })
+        // })
+    // })
 
     /**
      * .onSnapshot(): observando em tempo real
      */
-    firebase.firestore().collection('cards').onSnapshot(snapshot => {
+    // firebase.firestore().collection('cards').onSnapshot(snapshot => {
 
         // Usar dessa forma é equivalente ao .on('value') do RealTime Database
         // snapshot.docs.forEach();
 
         // Traz todos os dados com o evento de 'added' na primeira chamada e depois 
         // traz apenas os novos documentos ou documentos que sofreram alterações 
-        snapshot.docChanges().forEach(card => {
-            if(card.type == 'added'){
-                adicionaCardATela(card.doc.data(), card.doc.id);
-            };
-            if(card.type == 'modified'){
-                console.log('modified');
-            };
-            if(card.type == 'removed'){
-                console.log('removed');
-            };
+    //     snapshot.docChanges().forEach(card => {
+    //         if (card.type == 'added') {
+    //             adicionaCardATela(card.doc.data(), card.doc.id);
+    //         };
+    //         if (card.type == 'modified') {
+    //             console.log('modified');
+    //         };
+    //         if (card.type == 'removed') {
+    //             console.log('removed');
+    //         };
+    //     })
+    // });
+
+    /**
+     * Consultas
+     */
+    /**
+     * .where(campo, operador, valor): retorna dados que obedecerem a condição passada 
+     * .where não aceita || ou && e nem !=
+     */
+    firebase.firestore().collection('cards').where('idade', '>', 25).where('idade', '<', 35).get().then(snapshot => {
+        snapshot.docs.forEach(card => {
+            adicionaCardATela(card.data(), card.id);
         })
-    });   
+    })
 });
 
 /**
