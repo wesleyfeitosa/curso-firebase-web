@@ -9,6 +9,6 @@
   "author": "Wesley Feitosa",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^5.5.9"
+    "firebase": "^5.11.1"
   }
 }
