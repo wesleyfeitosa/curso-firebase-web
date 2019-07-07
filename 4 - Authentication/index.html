@@ -30,6 +30,7 @@
                 </div>
                 <button class="btn btn-primary" onclick="createLogin()">Criar conta</button>
                 <button class="btn btn-primary" onclick="loginEmail()">Login Email</button>
+                <button class="btn btn-danger" onclick="deletaUsuario()">Deletar Usuário</button>
                 <hr>
             </div>
             <div class="col-12 mb-3 text-center"><button class="btn btn-primary" onclick="loginFacebook()">Facebook</button><hr></div>
@@ -48,12 +49,13 @@
     <!-- Inicializa o firebase -->
     <script>
         var config = {
-            apiKey: "",
-            authDomain: "",
-            databaseURL: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: ""
+            apiKey: "AIzaSyA0RH24GDxMh-JN31qwm1jrhFx3WK5IvhM",
+            authDomain: "curso-firebase-web-667e0.firebaseapp.com",
+            databaseURL: "https://curso-firebase-web-667e0.firebaseio.com",
+            projectId: "curso-firebase-web-667e0",
+            storageBucket: "curso-firebase-web-667e0.appspot.com",
+            messagingSenderId: "1047486433537",
+            appId: "1:1047486433537:web:10d1026fcb1b6158"
         };
         firebase.initializeApp(config);
     </script>
