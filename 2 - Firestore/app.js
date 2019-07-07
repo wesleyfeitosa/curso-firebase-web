@@ -164,11 +164,50 @@ document.addEventListener("DOMContentLoaded", function () {
      * .where(campo, operador, valor): retorna dados que obedecerem a condição passada 
      * .where não aceita || ou && e nem !=
      */
-    firebase.firestore().collection('cards').where('idade', '>', 25).where('idade', '<', 35).get().then(snapshot => {
-        snapshot.docs.forEach(card => {
-            adicionaCardATela(card.data(), card.id);
-        })
+    // firebase.firestore().collection('cards').where('idade', '>', 25).where('idade', '<', 35).get().then(snapshot => {
+    //     snapshot.docs.forEach(card => {
+    //         adicionaCardATela(card.data(), card.id);
+    //     })
+    // })
+
+    /**
+     * Ordenação
+     * orderBy(campo, ordenação): Ordena pelo campo e pelo tipo de ordenação passados, tipo não obrigatório
+     * OBS: ao usar juntamente do .where() deve-se ordenar pelo mesmo campo
+     */
+    // firebase.firestore().collection('cards').where('curtidas', '>', 0).orderBy('curtidas', 'desc').get().then(snapshot => {
+    //     snapshot.docs.forEach(card => {
+    //         adicionaCardATela(card.data(), card.id);
+    //     })
+    // })
+
+    /**
+     * LIMITE
+     * .limit(numero): retorna  apenas o número de resultados que foi passado no parametro
+     */
+    // firebase.firestore().collection('cards').limit(3).get().then(snapshot => {
+    //     snapshot.forEach(card => {
+    //         adicionaCardATela(card.data(), card.id);
+    //     });
+    // });
+
+    /**
+     * Cursores / filtrar
+     * .startAt(valor): começa a filtrar no valor passado. Funciona como o operador >=
+     * .startAfter(valor): começa a filtrar no valor passado. Funciona como o operador >
+     * .endBefore(valor): termina de filtrar até o valor passado. Funciona como o operador <
+     * .endAt(valor): termina de filtrar até o valor passado. Funciona como o operador <= 
+     */
+    var startAt;
+    firebase.firestore().collection('cards').limit(3).get().then(snap => {
+        startAt = snap.docs[snap.docs.length - 1];
+        firebase.firestore().collection('cards').startAt(startAt).get().then(snapshot => {
+            snapshot.docs.forEach(card => {
+                adicionaCardATela(card.data(), card.id);
+            });
+        });
     })
+
 });
 
 /**
