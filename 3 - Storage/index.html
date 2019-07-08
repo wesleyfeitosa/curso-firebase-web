@@ -30,6 +30,13 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="text-center col-4"><button class="btn btn-warning" onclick="pausar()">Pausar</button></div>
+            <div class="text-center col-4"><button class="btn btn-success" onclick="continuar()">Continuar</button></div>
+            <div class="text-center col-4"><button class="btn btn-danger" onclick="cancelar()">Cancelar</button></div>
+            <div class="text-center col-4"><button class="btn btn-danger" onclick="deletar()">Deletar</button></div>
+        </div>
     </main>
 
     <!-- Firebase App is always required and must be first -->
@@ -37,6 +44,7 @@
     <!-- Add additional services that you want to use -->
     <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-database.js"></script>
+    
     <!-- Inicializa o firebase -->
     <script>
         var config = {
